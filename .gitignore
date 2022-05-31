@@ -1,4 +1,7 @@
 # Build and Release Folders
+# git rm -r --cached . borra cache
+
+
 node_modules/
 public/scss/
 package.json
