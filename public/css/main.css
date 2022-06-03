@@ -28,9 +28,19 @@
     justify-content: space-around;
     flex-wrap: wrap; }
     .contenedor .contenedor__section .contenedor__section__article {
-      height: 30%;
-      width: 22%;
-      border: 1px solid; }
+      height: 22rem;
+      width: 21rem;
+      border: 1px solid;
+      margin: 1rem; }
+      .contenedor .contenedor__section .contenedor__section__article img {
+        height: 66%;
+        width: 100%; }
+      .contenedor .contenedor__section .contenedor__section__article p {
+        border: 1px solid; }
+      .contenedor .contenedor__section .contenedor__section__article h5 {
+        border: 1px solid; }
+      .contenedor .contenedor__section .contenedor__section__article button {
+        border: 1px solid; }
   .contenedor .contenedor__footer {
     grid-area: pie;
     border: 1px solid;
