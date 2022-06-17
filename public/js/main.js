@@ -36,7 +36,7 @@ const addEventClik = () => {
 }
 
 const contadorCarrito = () => {
-    const totalCarrito = document.getElementById('cantidad')
+    const totalCarrito = document.querySelector('#cantidad')
     carrito = JSON.parse(localStorage.getItem('carrito'))
     totalCarrito.innerText = carrito.length
 }
