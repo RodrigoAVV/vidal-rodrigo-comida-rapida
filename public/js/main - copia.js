@@ -27,7 +27,7 @@ const producto = new Producto()
 const productos = producto.crearProductos()
 
 let carrito = []
-
+let productosSearch = []
 
 const addEventClik = () => {
     const botonesCompra = document.querySelectorAll('.contenedor__section__article__add')
@@ -55,21 +55,54 @@ const cargarProductos = () => {
         const contenedor = document.createElement("article")
         contenedor.className = 'contenedor__section__article'
         //blackstick
-        //Desestructuración
-        const { imagen,nombre,precio,codigo } = producto
-        contenedor.innerHTML = `<img src="public/img/comidas/${producto.imagen}" alt="${nombre}">
-                                <p>${nombre}</p>
-                                <h5>${precio}</h5>
-                                <button id="${codigo}" class="btn btn-info contenedor__section__article__add">Agregar al carrito</button>`
+        contenedor.innerHTML = `<img src="public/img/comidas/${producto.imagen}" alt="${producto.nombre}">
+                                <p>${producto.nombre}</p>
+                                <h5>${producto.precio}</h5>
+                                <button id="${producto.codigo}" class="btn btn-info contenedor__section__article__add">Agregar al carrito</button>`
         const cards = document.getElementById('contenedor__section')
         cards.append(contenedor)
     })
     addEventClik()
 }
 
+const cargarProductosSearch = (searchProductos) => {
+    searchProductos.forEach((producto)=>{
+        const contenedor = document.createElement("article")
+        contenedor.className = 'contenedor__section__article'
+        //blackstick
+        contenedor.innerHTML = ''
+        contenedor.innerHTML = `<img src="public/img/comidas/${producto.imagen}" alt="${producto.nombre}">
+                                <p>${producto.nombre}</p>
+                                <h5>${producto.precio}</h5>
+                                <button id="${producto.codigo}" class="btn btn-info contenedor__section__article__add">Agregar al carrito</button>`
+        const cards = document.getElementById('contenedor__section')
+        cards.append(contenedor)
+    })
+    addEventClik()
+}
+
+const buscarProducto = () => {
+    const btnSearch = document.querySelector('#contenedor__header__btn')
+    const txtSearch = document.querySelector('#contenedor__header__search')
+    let searchProductos = []
+    btnSearch.addEventListener('click', function(){
+        const nombre = txtSearch.value
+        //const producto = productos.find((producto) => producto.codigo ==  codigo)
+        productos.forEach((producto)=>{
+            if(producto.nombre.includes(nombre)){
+                searchProductos.push(producto)
+            }
+        })
+        //console.log(searchProductos)
+        cargarProductosSearch(searchProductos)
+    })
+    
+    addEventClik()
+}
 
 if (localStorage.getItem('carrito')) {
     contadorCarrito()
 }
 cargarProductos()
 
+buscarProducto()

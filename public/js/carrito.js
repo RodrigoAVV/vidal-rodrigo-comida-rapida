@@ -1,46 +1,82 @@
-carrito = []
+let carrito = []
 
 const cartContainer = document.querySelector('#contenedor__sec')
 
 const cargarCarrito = () => {
     cartContainer.innerHTML = ''
-    carrito = JSON.parse(localStorage.getItem('carrito'))
-    carrito.forEach((carro) =>{
+    //Operador lógico OR
+    carrito = JSON.parse(localStorage.getItem('carrito')) || []
+    if(carrito.length > 0){
+        carrito.forEach((carro) =>{
+            const contenedor = document.createElement("article")
+            contenedor.className = 'contenedor__sec__carrito'
+            //blackstick
+            //Desestructuración
+            const { imagen,nombre,descripcion,precio,codigo } = carro
+            contenedor.innerHTML = `
+                <img src="../public/img/comidas/${imagen}" alt="${nombre}">
+                <p>${descripcion}</p>
+                <h5>${precio}</h5>
+                <button id="${codigo}" class="btn btn-warning contenedor__sec__carrito__delete" title="Eliminar producto">
+                    <img src="../public/img/iconos/delete.png" alt="eliminar"/>
+                </button>`
+            cartContainer.append(contenedor)
+        })
+       addEventClik()
+       mostrarTotal()
+       contadorCarrito()
+    }else{
         const contenedor = document.createElement("article")
         contenedor.className = 'contenedor__sec__carrito'
         //blackstick
-        contenedor.innerHTML = `
-            <img src="../public/img/comidas/${carro.imagen}" alt="${carro.nombre}">
-            <p>${carro.descripcion}</p>
-            <h5>${carro.precio}</h5>
-            <button id="${carro.codigo}" class="btn btn-warning contenedor__sec__carrito__delete" title="Eliminar producto">
-                <img src="../public/img/iconos/delete.png" alt="eliminar"/>
-            </button>`
+        contenedor.innerHTML = '<h2>No hay productos en el carrito</h2>'
         cartContainer.append(contenedor)
-    })
-   addEventClik()
-   mostrarTotal()
-   contadorCarrito()
+    }
+    contadorCarrito()
 }
-
-const calcularTotal = () => {
+//Spread
+const sumarTotal = (...descuentos) => {
     carrito = JSON.parse(localStorage.getItem('carrito'))
-    let suma = 0
+    let descuento = 0
+    let total = 0
+    let montoFinal = 0
     carrito.forEach((carro)=>{
-        suma += carro.precio
+        total += carro.precio
     })
-    return suma
+    //Operadores lógicos
+    if(total >= 20000 && total <= 35000){
+        descuento = total * descuentos[0] / 100
+        montoFinal = total - descuento;
+    }
+    if(total > 35000 && total <= 50000){
+        descuento = total * descuentos[1] / 100
+        montoFinal = total - descuento;
+    }
+    if(total > 50000 && total <= 65000){
+        descuento = total * descuentos[2] / 100
+        montoFinal = total - descuento;
+    }
+    if(total > 65000){
+        descuento = total * descuentos[3] / 100
+        montoFinal = total - descuento;
+    }
+    return [total,descuento,montoFinal]
 }
 
 const mostrarTotal = () => {
+    items = sumarTotal(3,5,7,10)
+    console.log(items)
     const contenedor = document.createElement("article")
     contenedor.className = 'contenedor__sec__carrito'
+    //Operadores ternarios.
     contenedor.innerHTML = `
         <h2>Total</h2>
-        <h2>${calcularTotal()}</h2>
-        <button title="Eliminar producto">
-            Comprar
-        </button>`
+        <h2>${items[0]}</h2>
+        <h2>Descuento</h2>
+        <h2>${items[0] >= 20000 ? items[1] : 0}</h2>
+        <h2>Total a pagar</h2>
+        <h2>${items[0] >= 20000 ? items[2] : items[0]}</h2>
+        <button title="Eliminar producto"> Comprar </button>`
     cartContainer.append(contenedor)
 }
 
@@ -49,8 +85,9 @@ const quitarProducto = (e) => {
     let indice
     carrito = JSON.parse(localStorage.getItem('carrito'))
     for(let i = 0 ; i < carrito.length ; i++){
-        if(carrito[i].codigo == codigo){
-            indice = i
+        //Operador ternario
+        const encontrado = carrito[i].codigo == codigo ? indice = i : console.log('')
+        if(encontrado){
             break
         }
     }
@@ -68,7 +105,8 @@ const addEventClik = () => {
 const contadorCarrito = () => {
     const totalCarrito = document.querySelector('#cantidad')
     carrito = JSON.parse(localStorage.getItem('carrito'))
-    totalCarrito.innerText = carrito.length
+    carrito.length > 0 ? totalCarrito.innerText = carrito.length : totalCarrito.innerText = '0'
+    
 }
 cargarCarrito()
 
