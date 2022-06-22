@@ -95,7 +95,27 @@ const quitarProducto = (e) => {
     localStorage.setItem('carrito', JSON.stringify(carrito))
     cargarCarrito()
     contadorCarrito()
-  }
+    toastNotificacion()
+}
+
+const toastNotificacion = () => {
+    Toastify({
+        text: "Producto eliminado",
+        duration: 3000,
+        destination: "#",
+        newWindow: true,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "linear-gradient(to right, #F90606, #F08D8D)",
+        },
+        onClick: function(){
+        } // Callback after click
+      }).showToast();
+}
+
 const addEventClik = () => {
     const btnsDelete = document.querySelectorAll('.contenedor__sec__carrito__delete')
     btnsDelete.forEach((btnDelete) => {

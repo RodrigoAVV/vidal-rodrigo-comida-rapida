@@ -42,12 +42,31 @@ const contadorCarrito = () => {
     totalCarrito.innerText = carrito.length
 }
 
+const toastNotificacion = (text,color1,color2) => {
+    Toastify({
+        text: text,
+        duration: 3000,
+        destination: "#",
+        newWindow: true,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "linear-gradient(to right," + color1 + "," + color2 +")",
+        },
+        onClick: function(){} // Callback after click
+      }).showToast();
+}
+
 const agregarProducto = (e) => {
     const productoElegido = e.target.getAttribute('id')
     const producto = productos.find((producto) => producto.codigo ==  productoElegido)
     carrito.push(producto)
     localStorage.setItem('carrito', JSON.stringify(carrito))
     contadorCarrito()
+    toastNotificacion('Producto agregado','#00b09b','#96c93d')
+    sumarTotal()
 }
 
 const cargarProductos = () => {
@@ -65,6 +84,16 @@ const cargarProductos = () => {
         cards.append(contenedor)
     })
     addEventClik()
+   
+}
+
+const sumarTotal = () => {
+    carrito = JSON.parse(localStorage.getItem('carrito'))
+    let total = 0
+    carrito.forEach((carro)=>{
+        total += carro.precio
+    })
+    total >= 20000 ? toastNotificacion('Ya tiene descuento','#0341B5','#B1DAF5') : ''
 }
 
 
