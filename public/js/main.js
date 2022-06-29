@@ -6,25 +6,8 @@ class Producto{
         this.precio=precio
         this.imagen=imagen
     }
-    crearProductos(){
-        const productos = []
-        productos.push(new Producto(120,'Papas surtido','Papas fritas con carne de pollo y salsa a elección',6800,'papas-surtido.jpg'))
-        productos.push(new Producto(121,'Papas, pollo y asado','Papas fritas con pollo asado',7900,'papas-pollo-asado.jpg'))
-        productos.push(new Producto(122,'Papas con cebolla','Papas fritas con cebolla frita',4600,'papas-cebolla.jpg'))
-        productos.push(new Producto(123,'Papas con crema','Papas fritas con crema',3800,'papas-crema.jpg'))
-        productos.push(new Producto(124,'Papas fritas con tocino','Papas fritas con tocino y mostaza',3900,'papas-tocino.png'))
-        productos.push(new Producto(125,'Completo italiano','Completo tomate, palta y mayo',1600,'completo-italiano.png'))
-        productos.push(new Producto(126,'Hamburguesa de pollo','Hamburguesa pollo, tomate y cebolla',3200,'hamburguesa-pollo.jpg'))
-        productos.push(new Producto(127,'Nuggets de pollo','Nuggets de pollo mas salsa a elección',3800,'nuggets-pollo.jpg'))
-        productos.push(new Producto(128,'Pizza casera','Pizza con queso, aceituna, tomate y albahaca',5600,'pizza-casera.jpg'))
-        productos.push(new Producto(129,'Sándwich campestre','Sándwich queso, cebolla, tomate y mayo',5800,'sándwich-campestre.jpg'))
-        productos.push(new Producto(130,'Sándwich de pollo','Sándwich de pollo, palta, tomate y salsa ',6300,'sándwich-pollo.jpg'))
-        productos.push(new Producto(131,'Sándwich simple','Sándwich queso y jamón ',2000,'sándwich-simple.jpg'))
-        return productos
-    }
 }
-const producto = new Producto()
-const productos = producto.crearProductos()
+const producto = []
 
 let carrito = []
 
@@ -70,13 +53,22 @@ const agregarProducto = (e) => {
 }
 
 const cargarProductos = () => {
+    fetch('./public/js/datos.json')
+        .then( (res) => res.json())
+        .then( (data) => {
+            console.log(data)
+        })
+    
+    
+    
+    /*
     productos.forEach((producto)=>{
         const contenedor = document.createElement("article")
         contenedor.className = 'contenedor__section__article'
         //blackstick
         //Desestructuración
         const { imagen,nombre,precio,codigo } = producto
-        contenedor.innerHTML = `<img src="public/img/comidas/${producto.imagen}" alt="${nombre}">
+        contenedor.innerHTML = `<img src="public/img/comidas/${imagen}" alt="${nombre}">
                                 <p>${nombre}</p>
                                 <h5>${precio}</h5>
                                 <button id="${codigo}" class="btn btn-info contenedor__section__article__add">Agregar al carrito</button>`
@@ -84,7 +76,7 @@ const cargarProductos = () => {
         cards.append(contenedor)
     })
     addEventClik()
-   
+   */
 }
 
 const sumarTotal = () => {
@@ -96,9 +88,47 @@ const sumarTotal = () => {
     total >= 20000 ? toastNotificacion('Ya tiene descuento','#0341B5','#B1DAF5') : ''
 }
 
+let searchProductos = []
+const searchContainer = document.querySelector('#contenedor__section__search')
+
+const cargarProductosSearch = (searchProductos) => {
+    searchContainer.innerHTML = ''
+    
+    searchProductos.forEach((producto)=>{
+        const txtSearch = document.createElement("div")
+        txtSearch.className = 'contenedor__section__search'
+        //blackstick
+        txtSearch.innerHTML = ''
+        txtSearch.innerHTML = `<img src="public/img/comidas/${producto.imagen}" alt="${producto.nombre}">
+                                <p>${producto.nombre}</p>
+                                <h5>${producto.precio}</h5>
+                                <button id="${producto.codigo}" class="btn btn-info contenedor__section__article__add">Agregar al carrito</button>`
+        searchContainer.append(txtSearch)
+    })
+    addEventClik()
+}
+
+const buscarProducto = () => {
+    const btnSearch = document.querySelector('#contenedor__header__btn')
+    const txtSearch = document.querySelector('#contenedor__header__search')
+    btnSearch.addEventListener('click', function(){
+        searchProductos = []
+        const nombre = txtSearch.value
+        if(nombre.length > 0){
+            productos.forEach((producto)=>{
+                if(producto.nombre.includes(nombre)){
+                    searchProductos.push(producto)
+                }
+            })
+            addEventClik()
+            cargarProductosSearch(searchProductos)
+        }
+    })
+}
 
 if (localStorage.getItem('carrito')) {
     contadorCarrito()
 }
 cargarProductos()
+//buscarProducto()
 
