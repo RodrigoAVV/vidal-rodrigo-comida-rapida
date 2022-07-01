@@ -7,7 +7,7 @@ class Producto{
         this.imagen=imagen
     }
 }
-const producto = []
+let productos = []
 
 let carrito = []
 
@@ -54,29 +54,25 @@ const agregarProducto = (e) => {
 
 const cargarProductos = () => {
     fetch('./public/js/datos.json')
-        .then( (res) => res.json())
+        .then( (response) => response.json())
         .then( (data) => {
-            console.log(data)
+            productos = data
+            productos.forEach((producto)=>{
+                const contenedor = document.createElement("article")
+                contenedor.className = 'contenedor__section__article'
+                //blackstick
+                //Desestructuración
+                const { imagen,nombre,precio,codigo } = producto
+                contenedor.innerHTML = `<img src="public/img/comidas/${imagen}" alt="${nombre}">
+                                        <p>${nombre}</p>
+                                        <h5>${precio}</h5>
+                                        <button id="${codigo}" class="btn btn-info contenedor__section__article__add">Agregar al carrito</button>`
+                const cards = document.getElementById('contenedor__section')
+                cards.append(contenedor)
+            })
+            addEventClik()
         })
-    
-    
-    
-    /*
-    productos.forEach((producto)=>{
-        const contenedor = document.createElement("article")
-        contenedor.className = 'contenedor__section__article'
-        //blackstick
-        //Desestructuración
-        const { imagen,nombre,precio,codigo } = producto
-        contenedor.innerHTML = `<img src="public/img/comidas/${imagen}" alt="${nombre}">
-                                <p>${nombre}</p>
-                                <h5>${precio}</h5>
-                                <button id="${codigo}" class="btn btn-info contenedor__section__article__add">Agregar al carrito</button>`
-        const cards = document.getElementById('contenedor__section')
-        cards.append(contenedor)
-    })
-    addEventClik()
-   */
+        
 }
 
 const sumarTotal = () => {
@@ -109,14 +105,15 @@ const cargarProductosSearch = (searchProductos) => {
 }
 
 const buscarProducto = () => {
+    //La búsqueda convierte todo en mayúsculas para que el proceso se genérico
     const btnSearch = document.querySelector('#contenedor__header__btn')
     const txtSearch = document.querySelector('#contenedor__header__search')
     btnSearch.addEventListener('click', function(){
         searchProductos = []
-        const nombre = txtSearch.value
+        const nombre = txtSearch.value.toUpperCase()
         if(nombre.length > 0){
             productos.forEach((producto)=>{
-                if(producto.nombre.includes(nombre)){
+                if(producto.nombre.toUpperCase().includes(nombre)){
                     searchProductos.push(producto)
                 }
             })
@@ -130,5 +127,5 @@ if (localStorage.getItem('carrito')) {
     contadorCarrito()
 }
 cargarProductos()
-//buscarProducto()
+buscarProducto()
 

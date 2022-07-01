@@ -65,7 +65,6 @@ const sumarTotal = (...descuentos) => {
 
 const mostrarTotal = () => {
     items = sumarTotal(3,5,7,10)
-    console.log(items)
     const contenedor = document.createElement("article")
     contenedor.className = 'contenedor__sec__carrito'
     //Operadores ternarios.
