@@ -25,42 +25,53 @@
         <a href="#">Mi cuenta</a>
     </header>
     <nav class="navbar navbar-expand-lg navbar-expand-md navbar-expand-sm navbar-light bg-light contenedor__nav">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Pricing</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown link
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-          </ul>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Pagar</button>
+      <button type="button" class="btn btn-primary" id="btn_limpiar">Limpiar carrito</button>
+    </nav>
+    
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Detalle del pago</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="total" class="col-form-label">Total:</label>
+                <input type="number" class="form-control" id="total" disabled>
+              </div>
+              <div class="mb-3">
+                <label for="descuento" class="col-form-label">Descuento:</label>
+                <input type="number" class="form-control" id="descuento" disabled>
+              </div>
+              <div class="mb-3">
+                <label for="iva" class="col-form-label">IVA:</label>
+                <input type="number" class="form-control" id="iva" disabled>
+              </div>
+              <div class="mb-3">
+                <label for="total_pagar" class="col-form-label">Total a pagar:</label>
+                <input type="number" class="form-control" id="total_pagar" disabled>
+              </div>
+              <div class="mb-3">
+                <label for="direccion" class="col-form-label" id="lblDireccion">Dirección de envio:</label>
+                <input type="text" class="form-control" id="direccion">
+              </div>
+              <h2 id="success"><h2>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_cerrar">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="btn_pago">Realizar pago</button>
+          </div>
         </div>
       </div>
-    </nav>
+    </div>
     <section class="contenedor__sec" id="contenedor__sec">
-
+      
     </section>
-
+  
     <footer class="contenedor__footer">
       <section class="contenedor__footer__logo">
         <p>logo</p>
@@ -81,6 +92,7 @@
     crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   <script src="../public/js/carrito.js"></script>
+  <script src="../public/js/pagar.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 

@@ -85,25 +85,87 @@ const sumarTotal = () => {
 }
 
 let searchProductos = []
-const searchContainer = document.querySelector('#contenedor__section__search')
+const searchContainer = document.querySelector('#contenedor__section')
 
 const cargarProductosSearch = (searchProductos) => {
     searchContainer.innerHTML = ''
-    
-    searchProductos.forEach((producto)=>{
-        const txtSearch = document.createElement("div")
+    if(searchProductos.length > 0){
+        searchProductos.forEach((producto)=>{
+            const txtSearch = document.createElement("article")
+            txtSearch.className = 'contenedor__section__search'
+            //blackstick
+            txtSearch.innerHTML = ''
+            txtSearch.innerHTML = `<img src="public/img/comidas/${producto.imagen}" alt="${producto.nombre}">
+                                    <p>${producto.nombre}</p>
+                                    <h5>${producto.precio}</h5>
+                                    <button id="${producto.codigo}" class="btn btn-info contenedor__section__article__add">Agregar al carrito</button>`
+            searchContainer.append(txtSearch)
+        })
+        addEventClik()
+    }else{
+        const txtSearch = document.createElement("article")
         txtSearch.className = 'contenedor__section__search'
-        //blackstick
         txtSearch.innerHTML = ''
-        txtSearch.innerHTML = `<img src="public/img/comidas/${producto.imagen}" alt="${producto.nombre}">
-                                <p>${producto.nombre}</p>
-                                <h5>${producto.precio}</h5>
-                                <button id="${producto.codigo}" class="btn btn-info contenedor__section__article__add">Agregar al carrito</button>`
+        txtSearch.innerHTML = `<h3>Producto no encontrado</h3>
+                               <img src="public/img/iconos/no-encontrado.jpg" alt="No encontrado">`
         searchContainer.append(txtSearch)
-    })
-    addEventClik()
+    }
 }
 
+const precioMenor = document.querySelector('.btn-menor')
+const precioMayor = document.querySelector('.btn-mayor')
+const prodRecomendado = document.querySelector('.btn-recomendado')
+const ordenarMenores = () => {
+    precioMenor.addEventListener('click', function(){
+       let ordenados = productos
+       ordenados.sort(function (a, b) {
+        if (a.precio > b.precio) {
+          return 1;
+        }
+        if (a.precio < b.precio) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+      cargarProductosSearch(ordenados)
+      addEventClik()
+    })
+}
+
+const ordenarMayores = () => {
+    precioMayor.addEventListener('click', function(){
+       let ordenados = productos
+       ordenados.sort(function (a, b) {
+        if (a.precio < b.precio) {
+          return 1;
+        }
+        if (a.precio > b.precio) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+      cargarProductosSearch(ordenados)
+      addEventClik()
+    })
+}
+const recomendado = () => {
+    prodRecomendado.addEventListener('click', function(){
+       let ordenados = productos
+       let recomendados = []
+       ordenados.forEach((rec)=>{
+            if(rec.recomendado == true){
+                recomendados.push(rec)
+            }
+       })
+       cargarProductosSearch(recomendados)
+       addEventClik()
+    })
+}
+ordenarMenores()
+ordenarMayores()
+recomendado()
 const buscarProducto = () => {
     //La búsqueda convierte todo en mayúsculas para que el proceso se genérico
     const btnSearch = document.querySelector('#contenedor__header__btn')

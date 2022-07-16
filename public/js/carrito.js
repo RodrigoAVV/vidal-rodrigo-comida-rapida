@@ -7,6 +7,7 @@ const cargarCarrito = () => {
     //Operador lógico OR
     carrito = JSON.parse(localStorage.getItem('carrito')) || []
     if(carrito.length > 0){
+        mostrarTotal()
         carrito.forEach((carro) =>{
             const contenedor = document.createElement("article")
             contenedor.className = 'contenedor__sec__carrito'
@@ -23,8 +24,9 @@ const cargarCarrito = () => {
             cartContainer.append(contenedor)
         })
        addEventClik()
-       mostrarTotal()
+       
        contadorCarrito()
+      
     }else{
         const contenedor = document.createElement("article")
         contenedor.className = 'contenedor__sec__carrito'
@@ -37,30 +39,32 @@ const cargarCarrito = () => {
 //Spread
 const sumarTotal = (...descuentos) => {
     carrito = JSON.parse(localStorage.getItem('carrito'))
-    let descuento = 0
-    let total = 0
-    let montoFinal = 0
-    carrito.forEach((carro)=>{
-        total += carro.precio
-    })
-    //Operadores lógicos
-    if(total >= 20000 && total <= 35000){
-        descuento = total * descuentos[0] / 100
-        montoFinal = total - descuento;
+    if(carrito){
+        let descuento = 0
+        let total = 0
+        let montoFinal = 0
+        carrito.forEach((carro)=>{
+            total += carro.precio
+        })
+        //Operadores lógicos
+        if(total >= 20000 && total <= 35000){
+            descuento = total * descuentos[0] / 100
+            montoFinal = total - descuento;
+        }
+        if(total > 35000 && total <= 50000){
+            descuento = total * descuentos[1] / 100
+            montoFinal = total - descuento;
+        }
+        if(total > 50000 && total <= 65000){
+            descuento = total * descuentos[2] / 100
+            montoFinal = total - descuento;
+        }
+        if(total > 65000){
+            descuento = total * descuentos[3] / 100
+            montoFinal = total - descuento;
+        }
+        return [total,descuento,montoFinal]
     }
-    if(total > 35000 && total <= 50000){
-        descuento = total * descuentos[1] / 100
-        montoFinal = total - descuento;
-    }
-    if(total > 50000 && total <= 65000){
-        descuento = total * descuentos[2] / 100
-        montoFinal = total - descuento;
-    }
-    if(total > 65000){
-        descuento = total * descuentos[3] / 100
-        montoFinal = total - descuento;
-    }
-    return [total,descuento,montoFinal]
 }
 
 const mostrarTotal = () => {
@@ -75,26 +79,30 @@ const mostrarTotal = () => {
         <h2>${items[0] >= 20000 ? items[1] : 0}</h2>
         <h2>Total a pagar</h2>
         <h2>${items[0] >= 20000 ? items[2] : items[0]}</h2>
-        <button title="Eliminar producto"> Comprar </button>`
+        `
     cartContainer.append(contenedor)
+   
 }
 
 const quitarProducto = (e) => {
     const codigo = e.target.getAttribute('id')
     let indice
     carrito = JSON.parse(localStorage.getItem('carrito'))
-    for(let i = 0 ; i < carrito.length ; i++){
-        //Operador ternario
-        const encontrado = carrito[i].codigo == codigo ? indice = i : console.log('')
-        if(encontrado){
-            break
+    if(carrito){
+        for(let i = 0 ; i < carrito.length ; i++){
+            //Operador ternario
+            const encontrado = carrito[i].codigo == codigo ? indice = i : console.log('')
+            if(encontrado){
+                break
+            }
         }
+        carrito.splice(indice,1)
+        localStorage.setItem('carrito', JSON.stringify(carrito))
+        cargarCarrito()
+        contadorCarrito()
+        toastNotificacion()
+        mostrarDetalle()
     }
-    carrito.splice(indice,1)
-    localStorage.setItem('carrito', JSON.stringify(carrito))
-    cargarCarrito()
-    contadorCarrito()
-    toastNotificacion()
 }
 
 const toastNotificacion = () => {
@@ -124,8 +132,12 @@ const addEventClik = () => {
 const contadorCarrito = () => {
     const totalCarrito = document.querySelector('#cantidad')
     carrito = JSON.parse(localStorage.getItem('carrito'))
-    carrito.length > 0 ? totalCarrito.innerText = carrito.length : totalCarrito.innerText = '0'
-    
+    if(carrito){
+        carrito.length > 0 ? totalCarrito.innerText = carrito.length : totalCarrito.innerText = '0'
+    }else{
+        totalCarrito.innerHTML = '0'
+    }
 }
+
 cargarCarrito()
 
